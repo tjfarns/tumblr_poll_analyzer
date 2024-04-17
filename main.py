@@ -13,19 +13,20 @@ def add_headers(writer, max_num_results):
         headers.append("Results for Choice " + str(i + 1))
     writer.writerow(headers)
 
-BLOG_NAME = "tristrattournament"
 
 current_dir = dirname(__file__)
-file_path = join(current_dir, "./secrets.json")
+file_path = join(current_dir, "./client_info.json")
 with open(file_path, 'r') as f:
-    credentials = json.load(f)
+    client_info = json.load(f)
+
+BLOG_NAME = client_info["blog_name"]
 
 # Authorize through Pytumblr2 using OAuth credentials
 client = pytumblr2.TumblrRestClient(
-    credentials["consumer_key"],
-    credentials["consumer_secret"],
-    credentials["oauth_token"],
-    credentials["oauth_token_secret"],
+    client_info["consumer_key"],
+    client_info["consumer_secret"],
+    client_info["oauth_token"],
+    client_info["oauth_token_secret"],
 )
 
 # make a request for the blog's posts
