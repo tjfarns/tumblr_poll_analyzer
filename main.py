@@ -48,10 +48,12 @@ for post in response.get("posts"):
                 max_num_results = num_results
             for answer in content["answers"]:
                 poll_answers_map[answer["client_id"]] = answer["answer_text"]
+            # results are stored separately from the general post data, so an extra request is required
             votes_response = requests.get(
                 f"https://www.tumblr.com/api/v2/polls/{BLOG_NAME}/{post_id}/{poll_client_id}/results"
             ).content
             vote_results = jsonpickle.decode(votes_response)["response"]["results"]
+            # map ids to choice text
             vote_results_mapped = {}
             for key in vote_results:
                 vote_results_mapped[poll_answers_map[key]] = vote_results[key]
